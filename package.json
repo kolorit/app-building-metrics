@@ -10,7 +10,7 @@
 		"document"
 	],
 	"dependencies": {
-		"luucy-types": "github:luucyadmin/luucy-types#next/2.9.0"
+		"luucy-types": "github:luucyadmin/luucy-types#next/building2-onboarding"
 	},
 	"devDependencies": {
 		"typescript": "^4.9.3"
