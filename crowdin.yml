@@ -6,10 +6,11 @@
 files: [
  {
   "source" : "/i18n/en.ts",
+  "dest": "/apps/kennzahlen.ts",
   "translation" : "/i18n/%two_letters_code%.ts",
   "update_option": "update_as_unapproved",
   "labels" : [
-      "compare-variants"
+      "kennzahlen"
     ]
  }
 ]

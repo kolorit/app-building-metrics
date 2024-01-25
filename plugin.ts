@@ -21,13 +21,13 @@ const disabledRecords = (b: Record) => {
 };
 
 const onShowViewDetails = () => {
-  const showDetailsModal = new ui.Modal(i18n.View_Details, ui.medium);
+  const showDetailsModal = new ui.Modal(i18n.View_Details(), ui.medium);
 
   const variant = data.selectedProject?.selectedVariant;
   const buildings = variant?.buildings;
 
   if (!buildings) {
-    showDetailsModal.add(new ui.Label(i18n.No_variant_selected));
+    showDetailsModal.add(new ui.Label(i18n.No_variant_selected()));
     showDetailsModal.open();
     return;
   }
@@ -37,24 +37,24 @@ new ui.Column<Record>(variant.name, (item) => item.format(item.data[index]), { m
 );
 
   const metricsRecords: Record[] = [
-    { label: i18n.Volume, data: buildings.map((b) => b.volume.total), format: (value) => value.toMetricVolumeString() },
-    { label: i18n.Floor_Area, data: buildings.map((b) => b.floorArea.total), format: (value) => value.toMetricAreaString() },
-    { label: i18n.Area_above_ground, data: buildings.map((b) => b.floorArea.overground), format: (value) => value.toMetricAreaString() },
-    { label: i18n.Area_below_ground, data: buildings.map((b) => b.floorArea.underground), format: (value) => value.toMetricAreaString() },
-    { label: i18n.Footprint, data: buildings.map((b) => b.footprint), format: (value) => value.toMetricAreaString() },
+    { label: i18n.Volume(), data: buildings.map((b) => b.volume.total), format: (value) => value.toMetricVolumeString() },
+    { label: i18n.Floor_Area(), data: buildings.map((b) => b.floorArea.total), format: (value) => value.toMetricAreaString() },
+    { label: i18n.Area_above_ground(), data: buildings.map((b) => b.floorArea.overground), format: (value) => value.toMetricAreaString() },
+    { label: i18n.Area_below_ground(), data: buildings.map((b) => b.floorArea.underground), format: (value) => value.toMetricAreaString() },
+    { label: i18n.Footprint(), data: buildings.map((b) => b.footprint), format: (value) => value.toMetricAreaString() },
   ];
 
   // Prepare records for CSV export -> no m2/m3 units in formatting
   const metricsRecordsExport: Record[] = [
-    { label: i18n.Metrics, data: buildings.map((b) => b.name), format: (value) => value },
-    { label: i18n.Volume, data: buildings.map((b) => b.volume.total), format: (value) => value.toFixed(2) },
-    { label: i18n.Floor_Area, data: buildings.map((b) => b.floorArea.total), format: (value) => value.toFixed(2)},
-    { label: i18n.Area_above_ground, data: buildings.map((b) => b.floorArea.overground), format: (value) => value.toFixed(2) },
-    { label: i18n.Area_below_ground, data: buildings.map((b) => b.floorArea.underground), format: (value) => value.toFixed(2) },
-    { label: i18n.Footprint, data: buildings.map((b) => b.footprint), format: (value) => value},
+    { label: i18n.Metrics(), data: buildings.map((b) => b.name), format: (value) => value },
+    { label: i18n.Volume(), data: buildings.map((b) => b.volume.total), format: (value) => value.toFixed(2) },
+    { label: i18n.Floor_Area(), data: buildings.map((b) => b.floorArea.total), format: (value) => value.toFixed(2)},
+    { label: i18n.Area_above_ground(), data: buildings.map((b) => b.floorArea.overground), format: (value) => value.toFixed(2) },
+    { label: i18n.Area_below_ground(), data: buildings.map((b) => b.floorArea.underground), format: (value) => value.toFixed(2) },
+    { label: i18n.Footprint(), data: buildings.map((b) => b.footprint), format: (value) => value},
   ];
 
-  const metricsLabelColumn = new ui.Column<Record>(i18n.Metrics, (item) => item.label, { align: 'left', sticky: true, minWidth: 100 });
+  const metricsLabelColumn = new ui.Column<Record>(i18n.Metrics(), (item) => item.label, { align: 'left', sticky: true, minWidth: 100 });
   const metricsColumns = [metricsLabelColumn, ...columns];
   const metricsTable = new ui.Table(metricsRecords.filter(disabledRecords), metricsColumns);
   const metricsTableExport = new ui.Table(metricsRecordsExport.filter(disabledRecords), metricsColumns);
@@ -73,24 +73,24 @@ new ui.Column<Record>(variant.name, (item) => item.format(item.data[index]), { m
   //   format: toPercentage,
   // }));
   // const usagesColumns = [new ui.Column<Record>(
-  //   i18n.Usages, (item) => item.label), ...columns];
+  //   i18n.Usages(), (item) => item.label), ...columns];
   // const usagesTable = new ui.Table(usagesRecords, usagesColumns);
   // showDetailsModal.add(usagesTable);
 
-  showDetailsModal.addAction(ui.icons.export, i18n.Export_to_Excel, () => exportToCsv(`${variant.name}-overview.csv`, metricsTableExport));
+  showDetailsModal.addAction(ui.icons.export, i18n.Export_to_Excel(), () => exportToCsv(`${variant.name}-overview.csv`, metricsTableExport));
   showDetailsModal.open();
 };
 
 const onShowCompareVariants = async () => {
-  const compareVariantsModal = new ui.Modal(i18n.Compare_Variants, ui.medium);
-  compareVariantsModal.add(new ui.Label(i18n.Loading));
+  const compareVariantsModal = new ui.Modal(i18n.Compare_Variants(), ui.medium);
+  compareVariantsModal.add(new ui.Label(i18n.Loading()));
   compareVariantsModal.open();
 
   const variants = await data.selectedProject.getVariants();
 
   if (variants.length < 2) {
     compareVariantsModal.removeAllChildren();
-    compareVariantsModal.add(new ui.Label(i18n.Not_enough_variants));
+    compareVariantsModal.add(new ui.Label(i18n.Not_enough_variants()));
     return;
   }
 
@@ -99,40 +99,40 @@ const onShowCompareVariants = async () => {
   );
 
   const metricsRecords: Record[] = [
-    { label: i18n.Volume, data: variants.map((v) => v.totalVolume.total), format: (value) => value.toMetricVolumeString()},
-    { label: i18n.Floor_Area, data: variants.map((v) => v.totalFloorArea.total), format: (value) => value.toMetricAreaString() },
+    { label: i18n.Volume(), data: variants.map((v) => v.totalVolume.total), format: (value) => value.toMetricVolumeString()},
+    { label: i18n.Floor_Area(), data: variants.map((v) => v.totalFloorArea.total), format: (value) => value.toMetricAreaString() },
     {
-      label: i18n.Area_above_ground,
+      label: i18n.Area_above_ground(),
       data: variants.map((v) => v.totalFloorArea.overground),
       format: (value) => value.toMetricAreaString(),
     },
     {
-      label: i18n.Area_below_ground,
+      label: i18n.Area_below_ground(),
       data: variants.map((v) => v.totalFloorArea.underground),
       format: (value) => value.toMetricAreaString(),
     },
-    { label: i18n.Footprint, data: variants.map((v) => v.footprintArea), format: (value) => value.toMetricAreaString() },
+    { label: i18n.Footprint(), data: variants.map((v) => v.footprintArea), format: (value) => value.toMetricAreaString() },
   ];
 
   // Prepare records for CSV export -> no m2/m3 units in formatting
   const metricsRecordsForExport: Record[] = [
-    { label: i18n.Metrics, data: variants.map((v) => v.name), format: (value) => value },
-    { label: i18n.Volume, data: variants.map((v) => v.totalVolume.total), format: (value) => value.toFixed(2) },
-    { label: i18n.Floor_Area, data: variants.map((v) => v.totalFloorArea.total), format: (value) => value.toFixed(2) },
+    { label: i18n.Metrics(), data: variants.map((v) => v.name), format: (value) => value },
+    { label: i18n.Volume(), data: variants.map((v) => v.totalVolume.total), format: (value) => value.toFixed(2) },
+    { label: i18n.Floor_Area(), data: variants.map((v) => v.totalFloorArea.total), format: (value) => value.toFixed(2) },
     {
-      label: i18n.Area_above_ground,
+      label: i18n.Area_above_ground(),
       data: variants.map((v) => v.totalFloorArea.overground),
       format: (value) => value.toFixed(2),
     },
     {
-      label: i18n.Area_below_ground,
+      label: i18n.Area_below_ground(),
       data: variants.map((v) => v.totalFloorArea.underground),
       format: (value) => value.toFixed(2),
     },
-    { label: i18n.Footprint, data: variants.map((v) => v.footprintArea), format: (value) => value.toFixed(2) },
+    { label: i18n.Footprint(), data: variants.map((v) => v.footprintArea), format: (value) => value.toFixed(2) },
   ];
 
-  const metricsLabelColumn = new ui.Column<Record>(i18n.Metrics, (item) => item.label, { align: 'left', sticky: true, minWidth: 100 });
+  const metricsLabelColumn = new ui.Column<Record>(i18n.Metrics(), (item) => item.label, { align: 'left', sticky: true, minWidth: 100 });
   const metricsColumns = [metricsLabelColumn, ...columns];
   const metricsTable = new ui.Table(metricsRecords.filter(disabledRecords), metricsColumns);
   const metricsTableExport = new ui.Table(metricsRecordsForExport.filter(disabledRecords), metricsColumns);
@@ -152,11 +152,11 @@ const onShowCompareVariants = async () => {
   //   }),
   //   format: toPercentage,
   // }));
-  // const usagesLabelColumn = new ui.Column<Record>(i18n.Usages, (item) => item.label, { align: 'left', sticky: true, minWidth: 100 });
+  // const usagesLabelColumn = new ui.Column<Record>(i18n.Usages(), (item) => item.label, { align: 'left', sticky: true, minWidth: 100 });
   // const usagesColumns = [usagesLabelColumn, ...columns];
   // const usagesTable = new ui.Table(usagesRecords, usagesColumns);
 
-  compareVariantsModal.addAction(ui.icons.export, i18n.Export_to_Excel, () => {
+  compareVariantsModal.addAction(ui.icons.export, i18n.Export_to_Excel(), () => {
     exportToCsv(`${data.selectedProject.name}-overview.csv`, metricsTableExport);
 
     // TODO - uncomment when the usages design will be confirmed
@@ -183,17 +183,17 @@ let buildingsSubscription: Subscription<number>;
 data.onProjectSelect.subscribe(async (project) => {
   app.removeAllChildren();
   // section for active variant information
-  const section = new ui.Section(i18n.Selected_Variant);
+  const section = new ui.Section(i18n.Selected_Variant());
   app.add(section);
-  const volumeLabel = new ui.LabeledValue(i18n.Volume, "- m³");
+  const volumeLabel = new ui.LabeledValue(i18n.Volume(), "- m³");
   section.add(volumeLabel);
-  const areaLabel = new ui.LabeledValue(i18n.Floor_Area, "- m²");
+  const areaLabel = new ui.LabeledValue(i18n.Floor_Area(), "- m²");
   section.add(areaLabel);
-  const overgroundAreaLabel = new ui.LabeledValue(i18n.Area_above_ground, "- m²");
+  const overgroundAreaLabel = new ui.LabeledValue(i18n.Area_above_ground(), "- m²");
   section.add(overgroundAreaLabel);
-  const undergroundAreaLabel = new ui.LabeledValue(i18n.Area_below_ground, "- m²");
+  const undergroundAreaLabel = new ui.LabeledValue(i18n.Area_below_ground(), "- m²");
   section.add(undergroundAreaLabel);
-  const footprintLabel = new ui.LabeledValue(i18n.Footprint, "- m²");
+  const footprintLabel = new ui.LabeledValue(i18n.Footprint(), "- m²");
   features.Footprint ? section.add(footprintLabel) : null;
 
   const showVolume = (volume: data.Metric) => {
@@ -225,7 +225,7 @@ data.onProjectSelect.subscribe(async (project) => {
         areaSubscription = variant.onTotalFloorAreaChange.subscribe(showArea);
         buildingsSubscription = variant.onFootprintAreaChange.subscribe(showFootprint);
       } else {
-        section.name = i18n.No_variant_selected;
+        section.name = i18n.No_variant_selected();
         areaLabel.value = "- m²";
         volumeLabel.value = "- m³";
         overgroundAreaLabel.value = "- m²";
@@ -234,11 +234,11 @@ data.onProjectSelect.subscribe(async (project) => {
       }
     });
 
-    const viewDetailsButton = new ui.Button(i18n.View_Details, onShowViewDetails);
+    const viewDetailsButton = new ui.Button(i18n.View_Details(), onShowViewDetails);
     viewDetailsButton.primary = true;
     app.add(viewDetailsButton);
 
-    const compareVariantsButton = new ui.Button(i18n.Compare_Variants);
+    const compareVariantsButton = new ui.Button(i18n.Compare_Variants());
     compareVariantsButton.onClick.subscribe(async () => {
       compareVariantsButton.loading = true;
       await onShowCompareVariants();
