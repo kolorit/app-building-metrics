@@ -1,7 +1,7 @@
 {
 	"name": "building-metrics",
 	"displayName": "Building metrics",
-	"version": "1.3.11",
+	"version": "1.3.12",
 	"internal": true,
 	"productId": 225,
 	"scopes": [
